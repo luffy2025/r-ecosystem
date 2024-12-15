@@ -3,3 +3,27 @@ GET http://localhost:8080
 
 ### long task
 GET http://localhost:8080/long
+
+### axum serde json with state
+GET http://localhost:8080/state
+
+### patch with json body
+PATCH http://localhost:8080/update
+Content-Type: application/json
+
+{
+  "name": "david",
+  "email": "david@xyz.com",
+  "skills": [
+    "java",
+    "golang"
+  ]
+}
+
+### failed patch with a invalid json param type
+PATCH http://localhost:8080/update
+Content-Type: application/json
+
+{
+  "skills": 30
+}
