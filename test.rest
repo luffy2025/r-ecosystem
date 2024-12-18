@@ -27,3 +27,35 @@ Content-Type: application/json
 {
   "skills": 30
 }
+
+### minginx
+
+### index handler
+GET http://localhost:8081
+
+### long task
+GET http://localhost:8081/long
+
+### axum serde json with state
+GET http://localhost:8081/state
+
+### patch with json body
+PATCH http://localhost:8081/update
+Content-Type: application/json
+
+{
+  "name": "david",
+  "email": "david@xyz.com",
+  "skills": [
+    "java",
+    "golang"
+  ]
+}
+
+### failed patch with a invalid json param type
+PATCH http://localhost:8081/update
+Content-Type: application/json
+
+{
+  "skills": 30
+}
