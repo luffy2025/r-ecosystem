@@ -59,3 +59,14 @@ Content-Type: application/json
 {
   "skills": 30
 }
+
+### shortener shorten
+POST http://localhost:4869/
+Content-Type: application/json
+
+{
+  "url": "https://raw.githubusercontent.com/luffy2025/r-ecosystem/refs/heads/main/Cargo.toml"
+}
+
+### shortener redirect
+GET http://127.0.0.1:4869/MTRGuK

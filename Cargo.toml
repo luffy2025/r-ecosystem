@@ -38,3 +38,5 @@ blake3 = "1.5.5"
 bytes = "1.9.0"
 console-subscriber = "0.4.1"
 loom = "0.7.2"
+sqlx = { version = "0.8.2", features = ["postgres", "runtime-tokio", "tls-rustls"] }
+nanoid = "0.4.0"
