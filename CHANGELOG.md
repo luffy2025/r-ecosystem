@@ -3,7 +3,19 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 ---
-## [unreleased]
+## [4-12-shorten-rul](https://github.com/luffy2025/r-ecosystem/compare/v4-6-serde-with..v4-12-shorten-rul) - 2024-12-21
+
+### Features
+
+- using bytes to handle &[u8] - ([c10d0c6](https://github.com/luffy2025/r-ecosystem/commit/c10d0c60bb49fbfa95274178c28bf996a16aa6a4)) - Luffy2025
+- transmit between tokio and std - ([cbd6f77](https://github.com/luffy2025/r-ecosystem/commit/cbd6f77bfacf1b64580bcc752d097efd747ea2d8)) - Luffy2025
+- tcp proxy example by tokio - ([adada5b](https://github.com/luffy2025/r-ecosystem/commit/adada5b3509562cff142050c2b74a132775662d6)) - Luffy2025
+- using tokio and mpsc to build a chat room - ([337093c](https://github.com/luffy2025/r-ecosystem/commit/337093c7a8cde71f256424ad7611a7c914d41ca9)) - Luffy2025
+- using loom to test concurrent code - ([03667b1](https://github.com/luffy2025/r-ecosystem/commit/03667b128207a33f544cdae032c02f744a1e0343)) - Luffy2025
+- add shorten url example to learning sqlx - ([f6a309e](https://github.com/luffy2025/r-ecosystem/commit/f6a309ecb316bd7e79e6f766e4bacd3df05482d7)) - Luffy2025
+
+---
+## [4-6-serde-with](https://github.com/luffy2025/r-ecosystem/compare/v4-3-opentelemetry..v4-6-serde-with) - 2024-12-16
 
 ### Features
 
@@ -11,6 +23,10 @@ All notable changes to this project will be documented in this file. See [conven
 - using strum macros to simplify enum code - ([a7be070](https://github.com/luffy2025/r-ecosystem/commit/a7be07035b5e3262499a9e1c76f3142415d6ad88)) - Luffy2025
 - use serde to serialize and deserialize in axum - ([9ace372](https://github.com/luffy2025/r-ecosystem/commit/9ace3727ba0c6549f525dc95f76cd1dda27d9e11)) - Luffy2025
 - support crypto data in struct - ([fa96371](https://github.com/luffy2025/r-ecosystem/commit/fa96371df5957b31e7dbcc8bf1f4b9c816464372)) - Luffy2025
+
+### Miscellaneous Chores
+
+- update CHANGELOG - ([35a657f](https://github.com/luffy2025/r-ecosystem/commit/35a657ff1a320c0fab078bcf0f884f2938da1a5a)) - Luffy2025
 
 ---
 ## [4-3-opentelemetry] - 2024-12-14
