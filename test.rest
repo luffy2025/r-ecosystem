@@ -65,8 +65,8 @@ POST http://localhost:4869/
 Content-Type: application/json
 
 {
-  "url": "https://raw.githubusercontent.com/luffy2025/r-ecosystem/refs/heads/main/Cargo.toml"
+  "url": "https://raw.githubusercontent.com/luffy2025/r-ecosystem/refs/heads/main/.gitignore"
 }
 
 ### shortener redirect
-GET http://127.0.0.1:4869/MTRGuK
+GET http://127.0.0.1:4869/BRJcDR

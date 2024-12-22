@@ -1,13 +1,14 @@
 use anyhow::Result;
 use axum::extract::{Path, State};
-use axum::response::IntoResponse;
+use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post};
 use axum::{Json, Router};
 use http::header::LOCATION;
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
-use sqlx::Error::Database;
+use sqlx::Error::{Database, RowNotFound};
 use sqlx::{FromRow, PgPool};
+use std::fmt::Debug;
 use std::sync::Arc;
 use thiserror::Error;
 use tokio::net::TcpListener;
@@ -50,6 +51,8 @@ enum AppError {
     DBFailed,
     #[error("id exists")]
     IdExists,
+    #[error("id not found")]
+    IdNotFound,
 }
 
 #[tokio::main]
@@ -77,11 +80,8 @@ async fn main() -> Result<()> {
 async fn shorten(
     State(state): State<Arc<AppState>>,
     Json(data): Json<ShortenReq>,
-) -> Result<impl IntoResponse, StatusCode> {
-    let record = state.insert_url(data.url).await.map_err(|e| {
-        warn!("error: {:?}", e);
-        StatusCode::UNPROCESSABLE_ENTITY
-    })?;
+) -> Result<impl IntoResponse, AppError> {
+    let record = state.insert_url(data.url).await?;
 
     let body = Json(ShortenRes {
         url: format!("{}{}", ADDR, record.id),
@@ -93,8 +93,8 @@ async fn shorten(
 async fn redirect(
     Path(id): Path<String>,
     State(state): State<Arc<AppState>>,
-) -> Result<impl IntoResponse, StatusCode> {
-    let url = state.get_url(id).await.map_err(|_| StatusCode::NOT_FOUND)?;
+) -> Result<impl IntoResponse, AppError> {
+    let url = state.get_url(id).await?;
     let mut headers = http::header::HeaderMap::new();
     headers.insert(LOCATION, url.parse().unwrap());
 
@@ -119,18 +119,25 @@ impl AppState {
         Ok(Self { db: pool })
     }
 
-    async fn get_url(&self, id: impl Into<String>) -> Result<String> {
+    async fn get_url(&self, id: impl Into<String>) -> Result<String, AppError> {
         let record: UrlRecord = sqlx::query_as("SELECT url FROM urls WHERE id = $1")
             .bind(id.into())
             .fetch_one(&self.db)
-            .await?;
+            .await
+            .map_err(|e| match e {
+                RowNotFound => AppError::IdNotFound,
+                _ => {
+                    warn!("db select error: {:?}", e);
+                    AppError::DBFailed
+                }
+            })?;
 
         Ok(record.url)
     }
 
     async fn insert_url(&self, url: impl Into<String>) -> Result<UrlRecord, AppError> {
         let url = url.into();
-        for _ in 0..10 {
+        for _ in 0..20 {
             let id = nanoid::nanoid!(6);
             match self.insert_url_0(id, &url).await {
                 Ok(record) => return Ok(record),
@@ -173,5 +180,22 @@ impl AppState {
         })?;
 
         Ok(record)
+    }
+}
+
+impl IntoResponse for AppError {
+    fn into_response(self) -> Response {
+        match self {
+            AppError::SqlXFailed => {
+                (StatusCode::BAD_REQUEST, "[1] Please try later").into_response()
+            }
+            AppError::DBFailed => {
+                (StatusCode::UNPROCESSABLE_ENTITY, "[2] Please try later").into_response()
+            }
+            AppError::IdExists => {
+                (StatusCode::PAYLOAD_TOO_LARGE, "[3] Please try later").into_response()
+            }
+            AppError::IdNotFound => (StatusCode::NOT_FOUND, "[4] URL not found").into_response(),
+        }
     }
 }
