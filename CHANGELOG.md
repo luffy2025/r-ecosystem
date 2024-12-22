@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 ---
+## [unreleased]
+
+### Miscellaneous Chores
+
+- update CHANGELOG.md - ([e5e4c51](https://github.com/luffy2025/r-ecosystem/commit/e5e4c511def90368e9540ae5dd37a1077aad5cb5)) - Luffy2025
+
+### Refactoring
+
+- impl IntoResponse for AppError - ([207e51d](https://github.com/luffy2025/r-ecosystem/commit/207e51d5f31ff87c01e9be8f2ee152c97fdc3bf9)) - Luffy2025
+
+---
 ## [4-12-shorten-rul](https://github.com/luffy2025/r-ecosystem/compare/v4-6-serde-with..v4-12-shorten-rul) - 2024-12-21
 
 ### Features
